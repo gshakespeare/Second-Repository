@@ -1,0 +1,62 @@
+-- Create the countries table
+CREATE TABLE countries (
+    id INTEGER PRIMARY KEY,
+    name VARCHAR(50),
+    continent VARCHAR(30),
+    population INTEGER,
+    area_km2 INTEGER,
+    gdp_per_capita DECIMAL(10, 2)
+);
+
+-- Insert data into countries table
+INSERT INTO countries (id, name, continent, population, area_km2, gdp_per_capita) VALUES
+(1, 'China', 'Asia', 1402000000, 9596961, 10000.00),
+(2, 'India', 'Asia', 1366000000, 3287263, 2100.50),
+(3, 'USA', 'North America', 331000000, 9833517, 63000.00),
+(4, 'Indonesia', 'Asia', 273500000, 1904569, 4100.30),
+(5, 'Pakistan', 'Asia', 220900000, 881913, 1500.75),
+(6, 'Brazil', 'South America', 212600000, 8515767, 9000.20),
+(7, 'Nigeria', 'Africa', 206100000, 923768, 2200.40),
+(8, 'Bangladesh', 'Asia', 164700000, 147570, 1900.10),
+(9, 'Russia', 'Europe', 145900000, 17098242, 11500.00),
+(10, 'Mexico', 'North America', 128900000, 1964375, 9800.60),
+(11, 'Japan', 'Asia', 126300000, 377975, 40000.00),
+(12, 'Ethiopia', 'Africa', 114900000, 1104300, 900.00),
+(13, 'Philippines', 'Asia', 109600000, 300000, 3500.55),
+(14, 'Egypt', 'Africa', 102300000, 1010408, 3100.75),
+(15, 'Vietnam', 'Asia', 97000000, 331210, 2700.00);
+
+-- Sample Queries:
+
+-- 1. Average population of all countries
+SELECT AVG(population) AS avg_population FROM countries;
+
+-- 2. Max and min GDP per capita
+SELECT MAX(gdp_per_capita) AS max_gdp, MIN(gdp_per_capita) AS min_gdp FROM countries;
+
+-- 3. Average GDP per capita by continent
+SELECT continent, AVG(gdp_per_capita) AS avg_gdp
+FROM countries
+GROUP BY continent;
+
+-- 4. Countries with population over 100 million AND GDP per capita over 20,000
+SELECT name, population, gdp_per_capita
+FROM countries
+WHERE population > 100000000 AND gdp_per_capita > 20000;
+
+-- 5. Group countries by population size using CASE
+SELECT 
+    name,
+    population,
+    CASE 
+        WHEN population < 50000000 THEN 'Small'
+        WHEN population BETWEEN 50000000 AND 200000000 THEN 'Medium'
+        ELSE 'Large'
+    END AS population_size
+FROM countries;
+
+-- 6. Find continents with average population greater than 300 million (using HAVING)
+SELECT continent, AVG(population) AS avg_population
+FROM countries
+GROUP BY continent
+HAVING AVG(population) > 300000000;
